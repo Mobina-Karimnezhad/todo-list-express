@@ -10,12 +10,17 @@ app.use(express.static('public'));
 let todos = [];
 let idCounter = 1;
 
-// Load existing todos from file
+// Load existing todos from file safely
 if (fs.existsSync(DATA_FILE)) {
-  const raw = fs.readFileSync(DATA_FILE);
-  todos = JSON.parse(raw);
-  if (todos.length > 0) {
-    idCounter = Math.max(...todos.map(t => t.id)) + 1;
+  try {
+    const raw = fs.readFileSync(DATA_FILE);
+    todos = JSON.parse(raw);
+    if (todos.length > 0) {
+      idCounter = Math.max(...todos.map(t => t.id)) + 1;
+    }
+  } catch (err) {
+    console.error('Error reading data.json, starting with empty list');
+    todos = [];
   }
 }
 

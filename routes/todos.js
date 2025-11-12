@@ -22,8 +22,7 @@ function saveTodos(todos) {
 let todos = readTodos();
 let id = todos.length > 0 ? Math.max(...todos.map(t => t.id)) + 1 : 1;
 
-// 📍 GET /api/todos
-// با قابلیت فیلتر کردن بر اساس done (اختیاری)
+
 router.get('/', (req, res) => {
   const { done } = req.query;
   let result = todos;
