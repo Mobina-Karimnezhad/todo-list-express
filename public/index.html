@@ -1,25 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa">
 <head>
+  <meta charset="UTF-8">
   <title>My Todo List</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>📝 My Todo List</h1>
-
-  <div class="input-area">
-    <input id="newTodo" placeholder="Add new task...">
-    <button onclick="addTodo()">Add</button>
+  <div class="container">
+    <h1>My Todo List</h1>
+    <div class="input-area">
+      <input id="taskInput" placeholder="write your new work...">
+      <button id="addBtn">Add +</button>
+    </div>
+    <ul id="taskList"></ul>
   </div>
-
-  <div class="filters">
-    <button onclick="loadTodos()">All</button>
-    <button onclick="loadTodos(true)">✅ Done</button>
-    <button onclick="loadTodos(false)">⬜ Not Done</button>
-  </div>
-
-  <ul id="list"></ul>
-
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,32 +1,76 @@
-// app.js
 const express = require('express');
 const fs = require('fs');
-const morgan = require('morgan'); // (اختیاری) برای لاگ درخواست‌ها
-const todosRouter = require('./routes/todos');
-
+const path = require('path');
 const app = express();
+const DATA_FILE = path.join(__dirname, 'data.json');
 
-// --- Middlewareها ---
-app.use(express.json()); // برای خواندن JSON در body
-app.use(express.static('public')); // برای سرو فایل‌های HTML/CSS/JS
-app.use(morgan('dev')); // (اختیاری) لاگ متد، مسیر و زمان پاسخ
+app.use(express.json());
+app.use(express.static('public'));
 
-// --- مسیر todos ---
-app.use('/api/todos', todosRouter);
+let todos = [];
+let idCounter = 1;
 
-// --- خطای 404 ---
-app.use((req, res, next) => {
-  res.status(404).json({ error: 'Not Found' });
+// Load existing todos from file
+if (fs.existsSync(DATA_FILE)) {
+  const raw = fs.readFileSync(DATA_FILE);
+  todos = JSON.parse(raw);
+  if (todos.length > 0) {
+    idCounter = Math.max(...todos.map(t => t.id)) + 1;
+  }
+}
+
+function saveToFile() {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(todos, null, 2));
+}
+
+// Get all todos
+app.get('/api/todos', (req, res) => {
+  res.json(todos);
 });
 
-// --- هندلر مرکزی خطاها ---
-app.use((err, req, res, next) => {
-  console.error('⚠️ Server Error:', err.message);
-  res.status(500).json({ error: 'Internal Server Error' });
+// Add a new todo
+app.post('/api/todos', (req, res) => {
+  const { text } = req.body;
+  if (!text || text.trim() === '') return res.status(400).json({ error: 'Text required' });
+
+  const todo = { id: idCounter++, text: text.trim(), done: false };
+  todos.push(todo);
+  saveToFile();
+  res.status(201).json(todo);
 });
 
-// --- اجرا ---
-const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+// Toggle done
+app.put('/api/todos/:id', (req, res) => {
+  const todo = todos.find(t => t.id == req.params.id);
+  if (!todo) return res.status(404).json({ error: 'Todo not found' });
+  todo.done = !todo.done;
+  saveToFile();
+  res.json(todo);
 });
+
+// Edit text
+app.patch('/api/todos/:id', (req, res) => {
+  const todo = todos.find(t => t.id == req.params.id);
+  if (!todo) return res.status(404).json({ error: 'Todo not found' });
+
+  const { text } = req.body;
+  if (!text || text.trim() === '') return res.status(400).json({ error: 'Text required' });
+
+  todo.text = text.trim();
+  saveToFile();
+  res.json(todo);
+});
+
+// Delete todo
+app.delete('/api/todos/:id', (req, res) => {
+  todos = todos.filter(t => t.id != req.params.id);
+  saveToFile();
+  res.status(204).end();
+});
+
+// 404 handler
+app.use((req, res) => res.status(404).send('Not found'));
+
+// Start server
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
