@@ -1,52 +1,115 @@
 body {
   font-family: Arial, sans-serif;
-  text-align: center;
-  background: #f2f2f2;
+  background-color: #f7f8fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #fff;
   padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 400px;
 }
 
 h1 {
-  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .input-area {
+  display: flex;
+  gap: 10px;
   margin-bottom: 15px;
 }
 
-input {
-  padding: 10px;
-  width: 200px;
+#taskInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
-button {
-  padding: 10px 15px;
-  margin: 5px;
-  background: #008cba;
+#addBtn {
+  padding: 8px 15px;
+  background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-button:hover {
-  background: #0077a3;
+#addBtn:hover {
+  background-color: #45a049;
 }
 
-ul {
+#taskList {
   list-style: none;
   padding: 0;
 }
 
-li {
-  background: white;
-  margin: 5px auto;
-  padding: 10px;
-  width: 250px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: left;
+.task {
+  display: flex;
+  align-items: center;
+  background: #f1f3f6;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 8px;
 }
 
-li:hover {
-  background: #e0f7ff;
+.task span {
+  flex: 1;
+  margin: 0 10px;
+  word-break: break-word;
+}
+
+/* دکمه Done ✅ / ⬜ */
+.btn-done {
+  background-color: #4cafef;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  border: none;
+}
+
+.btn-done:hover {
+  background-color: #3ba9db;
+}
+
+/* Edit button */
+.btn-edit {
+  background-color: #ffb84d; 
+  border: none;
+  padding: 5px 8px;
+  margin-left: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+}
+.btn-edit:hover {
+  background-color: #e6a843;
+}
+
+/* Delete button */
+.btn-delete {
+  background-color: #ff6666; 
+  border: none;
+  padding: 5px 8px;
+  margin-left: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+}
+.btn-delete:hover {
+  background-color: #e65555;
 }

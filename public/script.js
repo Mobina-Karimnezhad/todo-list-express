@@ -11,15 +11,14 @@ async function loadTasks() {
   todos.forEach(t => {
     const li = document.createElement('li');
     li.className = 'task';
-    if (t.done) li.classList.add('completed'); // کلاس برای خط کشیدن روی متن
 
     const span = document.createElement('span');
     span.textContent = t.text;
 
-    // Done button
+    // Done button (toggle ✅ / ⬜)
     const doneBtn = document.createElement('button');
-    doneBtn.textContent = '✔';
     doneBtn.className = 'btn-done';
+    doneBtn.textContent = t.done ? '✅' : '⬜';
     doneBtn.addEventListener('click', async () => {
       await fetch(`/api/todos/${t.id}`, { method: 'PUT' });
       loadTasks();
@@ -50,9 +49,8 @@ async function loadTasks() {
       loadTasks();
     });
 
-    // ترتیب append: اول متن، بعد دکمه‌ها
-    li.appendChild(span);
     li.appendChild(doneBtn);
+    li.appendChild(span); // متن بعد از دکمه تیک
     li.appendChild(editBtn);
     li.appendChild(deleteBtn);
 
