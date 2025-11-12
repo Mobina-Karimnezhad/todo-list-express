@@ -11,7 +11,7 @@ async function loadTasks() {
   todos.forEach(t => {
     const li = document.createElement('li');
     li.className = 'task';
-    if (t.done) li.classList.add('completed');
+    if (t.done) li.classList.add('completed'); // کلاس برای خط کشیدن روی متن
 
     const span = document.createElement('span');
     span.textContent = t.text;
@@ -50,10 +50,12 @@ async function loadTasks() {
       loadTasks();
     });
 
+    // ترتیب append: اول متن، بعد دکمه‌ها
+    li.appendChild(span);
     li.appendChild(doneBtn);
     li.appendChild(editBtn);
     li.appendChild(deleteBtn);
-    li.appendChild(span);
+
     taskList.appendChild(li);
   });
 }
